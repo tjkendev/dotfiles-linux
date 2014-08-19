@@ -1,0 +1,2 @@
+setenv("CFLAGS", "-D__STDC_CONSTANT_MACROS");
+setenv("CXXFLAGS", "-D__STDC_CONSTANT_MACROS");

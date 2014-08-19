@@ -1,0 +1,68 @@
+pcm.pulse
+{
+  type pulse
+}
+ctl.pulse
+{
+  type pulse
+}
+
+pcm.rawjack {
+    type jack
+    playback_ports {
+        0 system:playback_1
+        1 system:playback_2
+    }
+    capture_ports {
+        0 system:capture_1
+        1 system:capture_2
+    }
+}
+
+pcm.jack {
+    type plug
+    slave { pcm "rawjack" }
+    hint {
+ 	description "JACK Audio Connection Kit"
+    }
+}
+
+#pcm.!default {
+#type oss
+#device /dev/dsp
+#}
+#ctl.!default {
+#type oss
+#device /dev/mixer
+#}
+
+#pcm2.!default {
+#    type plug
+#    slave { pcm "rawjack" }
+#}
+
+pcm.!default {
+    @func refer
+    name { @func concat 
+           strings [ "pcm."
+                     { @func getenv
+                       vars [ ALSA_DEFAULT_PCM ]
+                       default "pulse"
+                     }
+           ]
+         }
+}
+
+ctl.!default {
+    @func refer
+    name { @func concat 
+           strings [ "ctl."
+                     { @func getenv
+                       vars [ ALSA_DEFAULT_CTL
+                              ALSA_DEFAULT_PCM
+                       ]
+                       default "pulse"
+                     }
+           ]
+         }
+}
