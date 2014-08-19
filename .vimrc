@@ -8,10 +8,10 @@ set tabstop=2    " タブ幅
 set shiftwidth=2 " タブを挿入するときの幅
 set expandtab    " タブをスペースとして扱う
 set softtabstop=0 " 
-set shiftround   " <>インデントはshiftwidth
-"set infercase
+set shiftround   " インデントはshiftwidthの倍数
+set infercase
 "set virtualedit=all
-"set hidden
+set hidden
 set backspace=indent,eol,start " Backspaceによる削除有効化
 set autoindent  " オートインデント
 "set cindent     " オートインデントより賢いインデント(C用?)
@@ -81,6 +81,16 @@ let g:java_highlight_functions=1
 " COBOL
 "let cobol_legacy_code = 1
 
+""" source ~/.vimrc
+ca svimrc source<Space>~/.vimrc
+ca vdiffsplit vertical<Space>diffsplit
+
+augroup cpp-path
+    autocmd!
+    autocmd FileType cpp setlocal path+=.,/usr/include,/usr/local/include,/usr/include/c++/4.8.1
+augroup END
+
+
 """ NeoBundle """
 set nocompatible
 filetype off
@@ -103,19 +113,37 @@ endif
 
 " base
 NeoBundleFetch 'Shougo/neobundle.vim'
-NeoBundle 'Shougo/vimproc'
-
+NeoBundle 'Shougo/vimproc', {
+      \ 'build' : {
+      \     'windows' : 'tools\\update-dll-mingw',
+      \     'cygwin' : 'make -f make_cygwin.mak',
+      \     'mac' : 'make -f make_mac.mak',
+      \     'unix' : 'make -f make_unix.mak',
+      \    },
+      \ }
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/vimshell'
 NeoBundle 'thinca/vim-quickrun'
+NeoBundle "jceb/vim-hier"
 NeoBundle 'scrooloose/syntastic'
 NeoBundle 'vim-scripts/VimClojure'
+NeoBundle 'spolu/dwm.vim'
+NeoBundle 'tyru/caw.vim'
 NeoBundle 'Yggdroot/indentLine'
 "NeoBundle 'tpope/vim-surround'
 NeoBundle 'Shougo/neocomplete.vim'
-NeoBundle 'Shougo/neosnippet'
+NeoBundleLazy 'osyo-manga/vim-marching', {
+            \ 'depends' : ['Shougo/vimproc.vim', 'osyo-manga/vim-reunions'],
+            \ 'autoload' : {'filetypes' : ['c', 'cpp']}
+            \ }
+"NeoBundle 'Shougo/neosnippet'
+NeoBundle 'SirVer/ultisnips'
+NeoBundle 'honza/vim-snippets'
+NeoBundleLazy 'osyo-manga/vim-stargate', {
+      \ 'autoload' : {'filetypes' : 'cpp'}
+      \ }
 NeoBundle 'jpalardy/vim-slime'
 NeoBundle 'troydm/easybuffer.vim'
 NeoBundle 'osyo-manga/vim-over'
@@ -126,7 +154,11 @@ NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tpope/vim-rails'
 NeoBundle 'tpope/vim-endwise'
 " c++
-NeoBundle 'vim-jp/cpp-vim'
+NeoBundleLazy 'vim-jp/cpp-vim', {
+      \ 'autoload' : {'filetypes' : 'cpp'}
+      \}
+" python
+NeoBundle 'davidhalter/jedi-vim'
 "" javascript / node.js
 NeoBundle 'jelera/vim-javascript-syntax'
 NeoBundle 'kchmck/vim-coffee-script'
@@ -153,7 +185,10 @@ NeoBundle 'nanotech/jellybeans.vim'
 NeoBundle 'w0ng/vim-hybrid'
 NeoBundle 'altercation/vim-colors-solarized'
 
-"" ----- unite.vim ----- {{{
+" git protocol
+let g:neobundle_default_git_protocol='git'
+
+"" ----- unite.vim -----
 " The prefix key.
 nnoremap    [unite]   <Nop>
 nmap    <Leader>f [unite]
@@ -174,18 +209,45 @@ let g:vinarise_enable_auto_detect = 1
 nnoremap <silent> ,vb :Unite build<CR>
 nnoremap <silent> ,vcb :Unite build:!<CR>
 nnoremap <silent> ,vch :UniteBuildClearHighlight<CR>
-"" }}}
 
 "" ----- neocomplete -----
+let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_smart_case = 1
+let g:neocomplete#enable_fuzzy_completion = 1
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+let g:neocomplete#auto_completion_start_length = 2
+let g:neocomplete#manual_completion_start_length = 0
+let g:neocomplete#min_keyword_length = 3
+let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+
+let g:neocomplete#enable_auto_select = 1
+let g:neocomplete#enable_refresh_always = 0
+
+let g:neocomplcache_enable_quick_match = 1
+
+"let g:acp_enableAtStartup = 0
+
+let g:neocomplete#enable_auto_delimiter = 1
+let g:neocomplete#enable_auto_close_preview = 1
 "let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#enable_ignore_case = 1
-let g:neocomplete#enable_smart_case  = 1
-let g:neocomplete#enable_fuzzy_completion = 0
+"let g:neocomplete#enable_ignore_case = 1
+"let g:neocomplete#enable_smart_case  = 1
+"let g:neocomplete#enable_fuzzy_completion = 0
+
+"let g:neocomplete#sources#syntax#min_keyword_length = 2
+"let g:neocomplete#auto_completion_start_length = 2
+"let g:neocomplete#manual_completion_start_length = 0
+"let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+
+let g:neocomplete#skip_auto_completion_time = ""
 
 if !exists('g:neocomplete#keyword_patterns')
     let g:neocomplete#keyword_patterns = {}
 endif
 let g:neocomplete#keyword_patterns._ = '\h\w*'
+if !exists('g:neocomplete#force_omni_input_patterns')
+    let g:neocomplete#force_omni_input_patterns = {}
+endif
 
 if !exists('g:neocomplete#sources#dictionary#dictionaries')
   let g:neocomplete#sources#dictionary#dictionaries = {}
@@ -196,28 +258,23 @@ let g:neocomplete#sources#buffer#disabled_pattern = '\.log\|\.log\.\|\.jax\|Log.
 call neocomplete#custom_source('_', 'sorters',  ['sorter_length'])
 call neocomplete#custom_source('_', 'matchers', ['matcher_head'])
 
-inoremap <expr><C-n>  pumvisible() ? "\<C-n>" : "\<C-x>\<C-u>\<C-p>"
-inoremap <expr><CR>   pumvisible() ? "\<C-n>" . neocomplete#close_popup()  : "<CR>"
-inoremap <expr><C-e>  pumvisible() ? neocomplete#close_popup() : "<End>"
-inoremap <expr><C-c>  neocomplete#cancel_popup()
-inoremap <expr><C-u>  neocomplete#undo_completion()
-inoremap <expr><C-h>  neocomplete#smart_close_popup()."\<C-h>"
+"let g:neocomplete#sources#include#paths = {
+"      \ 'cpp' : '.,/usr/include,/usr/include/c++/4.8.1,/usr/local/include'
+"      \ }
+
+"inoremap <expr><C-n>  pumvisible() ? '\<C-n>' : '\<C-x>\<C-u>\<C-p>'
+"inoremap <expr><CR>   pumvisible() ? '\<C-n>' . neocomplete#close_popup()  : '<CR>'
+"inoremap <expr><C-e>  pumvisible() ? neocomplete#close_popup() : '<End>'
+"inoremap <expr><C-c>  neocomplete#cancel_popup()
+"inoremap <expr><C-u>  neocomplete#undo_completion()
+"inoremap <expr><C-h>  neocomplete#smart_close_popup().'\<C-h>'
+
+"" ----- vim-marching -----
+let g:marching_enable_neocomplete = 1
+let g:marching_clang_command_option="-std=c++1y"
+let g:neocomplete#force_omni_input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
 
 "" ----- vim-easymotion -----
-" http://blog.remora.cx/2012/08/vim-easymotion.html
-" 2 character search motion
-"nmap s <Plug>(easymotion-s2)
-"nmap t <Plug>(easymotion-t2)
-" n character search motion
-"map  / <Plug>(easymotion-sn)
-"omap / <Plug>(easymotion-tn)
-"map  n <Plug>(easymotion-next)
-"map  N <Plug>(easymotion-prev)
-" hjkl motion
-"map <Leader>h <Plug>(easymotion-lineforward)
-"map <Leader>j <Plug>(easymotion-j)
-"map <Leader>k <Plug>(easymotion-k)
-"map <Leader>l <Plug>(easymotion-linebackward)
 " Smartcase & Smartsign
 let g:EasyMotion_smartcase = 1
 let g:EasyMotion_use_smartsign_jp = 1
@@ -225,7 +282,7 @@ let g:EasyMotion_use_smartsign_jp = 1
 let g:EasyMotion_use_migemo = 1
 " ホームポジションに近いキーを使う
 let g:EasyMotion_keys='hjklasdfgyuiopqwertnmzxcvbHJKLASDFGYUIOPQWERTNMZXCVB'
-" 「;」 + 何かにマッピング
+" ";" + 何かにマッピング
 let g:EasyMotion_leader_key=";"
 " 1 ストローク選択を優先する
 let g:EasyMotion_grouping=1
@@ -244,25 +301,34 @@ let g:lightline = {
       \ 'subseparator': { 'left': "\u2b81", 'right': "\u2b83" }
       \ }
 
-"" ----- neosnippet -----
+"""" ----- neosnippet -----
+""
+""" Plugin key-mappings.
+""imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+""smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+""xmap <C-k>     <Plug>(neosnippet_expand_target)
+""
+""" SuperTab like snippets behavior.
+""imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+""\ "\<Plug>(neosnippet_expand_or_jump)"
+""\: pumvisible() ? "\<C-n>" : "\<TAB>"
+""smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+""\ "\<Plug>(neosnippet_expand_or_jump)"
+""\: "\<TAB>"
+""
+""" For snippet_complete marker.
+""if has('conceal')
+""  set conceallevel=2 concealcursor=i
+""endif
 
-" Plugin key-mappings.
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
+" ----- ultisnips -----
+"  Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
-" SuperTab like snippets behavior.
-imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)"
-\: pumvisible() ? "\<C-n>" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)"
-\: "\<TAB>"
-
-" For snippet_complete marker.
-if has('conceal')
-  set conceallevel=2 concealcursor=i
-endif
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"
 
 "" ----- indentLine -----
 let g:indentLine_char = '¦'
@@ -279,11 +345,38 @@ let g:quickrun_config = {
       \     "cmdopt" : "-std=c++11"
       \ },
       \}
-" <C-c>でquickrunを強制終了できるように
+" <C-c>でquickrunを強制終了
 nnoremap <expr><silent> <C-c> quickrun#is_running() ? quickrun#sweep_scessions() : "\<C-c>"
+" F5 running
+nnoremap <silent><F5> :QuickRun -mode n<CR>
+vnoremap <silent><F5> :QuickRun -mode v<CR>
+" qr = QuickRun
+ca qr QuickRun
 
 "" ----- ghc-mod -----
 let $PATH = $PATH . ':' . expand("~/.cabal/bin")
+
+"" ----- syntastic -----
+" use c++11
+let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libc++'
+" use pyflakes and pep8
+let g:syntastic_python_checkers = ['pyflakes', 'pep8']
+" pep8のErrorCheck僕には厳しいので少し緩めに
+let g:syntastic_python_pep8_args='--ignore=E302,E501,E225,E226,E228,E265,E702,E703'
+" SyntasticToggleMode を F4 で切り替え
+nnoremap <silent><F4> :SyntasticToggleMode<CR>
+vnoremap <silent><F4> :SyntasticToggleMode<CR>
+
+" ----- caw -----
+" \c でコメントアウト
+nmap \c <Plug>(caw:I:toggle)
+vmap \c <Plug>(caw:I:toggle)
+" \C でコメントアウトの解除
+nmap \C <Plug>(caw:I:uncomment)
+vmap \C <Plug>(caw:I:uncomment)
+
+" after command
+set showcmd
 
 """ colorscheme """
 colorscheme jellybeans
