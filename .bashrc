@@ -124,13 +124,28 @@ alias mozc-dict="/usr/lib/mozc/mozc_tool --mode=dictionary_tool"
 
 # wine
 WINENOPULSE=1
+# wine32
+alias wine32='WINEARCH=win32 WINEPREFIX=~/.wine32 wine'
+alias winebuild32='WINEARCH=win32 WINEPREFIX=~/.wine32 winebuild'
+alias winecfg32='WINEARCH=win32 WINEPREFIX=~/.wine32 winecfg'
+alias wineconsole32='WINEARCH=win32 WINEPREFIX=~/.wine32 wineconsole'
+alias winecpp32='WINEARCH=win32 WINEPREFIX=~/.wine32 winecpp'
+alias winedbg32='WINEARCH=win32 WINEPREFIX=~/.wine32 winedbg'
+alias winedump32='WINEARCH=win32 WINEPREFIX=~/.wine32 winedump'
+alias winefile32='WINEARCH=win32 WINEPREFIX=~/.wine32 winefile'
+alias winegcc32='WINEARCH=win32 WINEPREFIX=~/.wine32 winegcc'
+alias wineg++32='WINEARCH=win32 WINEPREFIX=~/.wine32 wineg++'
+alias winepath32='WINEARCH=win32 WINEPREFIX=~/.wine32 winepath'
+alias winetricks32='WINEARCH=win32 WINEPREFIX=~/.wine32 winetricks'
+
+alias a='./a.out'
 
 # nvm
 source ~/.nvm/nvm.sh
 
 # rbenv
-export PATH="$HOME/.rbenv/bin:$PATH" 
-eval "$(rbenv init -)" 
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
 
 # cabal
 export PATH="$PATH:~/.cabal/bin"

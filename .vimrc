@@ -47,13 +47,13 @@ set encoding=utf-8
 set ambw=double
 set termencoding=utf-8
 set fileencoding=utf-8
-set fileencodings=ucs-bom,euc-jp,cp932,iso-2022-jp
-set fileencodings+=,ucs-2le,ucs-2,utf-8
+"set fileencodings=ucs-bom,euc-jp,cp932,iso-2022-jp
+"set fileencodings+=,ucs-2le,ucs-2,utf-8
 
 """ System """
 set mouse=a     " マウス機能有効化
 set nobackup    " バックアップ不要
-set backupdir=~/.vimbackup " バックアップディレクトリ
+"set backupdir=~/.vimbackup " バックアップディレクトリ
 set noswapfile  " スワップファイル不要
 set vb t_vb=    " ビープ音Off
 set shortmess& shortmess+=I     " 起動時のメッセージを消す
@@ -66,6 +66,7 @@ set noerrorbells  " エラー時のSE無効
 """ CommandLine """
 set wildmenu    " コマンドラインモードでTabキーでファイル名保管を有効
 set showcmd     " 入力中のコマンドをステータスに表示
+set magic       " 検索時に正規表現を利用する
 
 """ Detail """
 " 不可視文字の設定
@@ -81,6 +82,10 @@ let g:java_highlight_functions=1
 " COBOL
 "let cobol_legacy_code = 1
 
+" coffeescript
+au BufRead,BufNewFile,BufReadPre *.coffee   set filetype=coffee
+autocmd FileType coffee     setlocal sw=2 sts=2 ts=2 et
+
 """ source ~/.vimrc
 ca svimrc source<Space>~/.vimrc
 ca vdiffsplit vertical<Space>diffsplit
@@ -89,7 +94,6 @@ augroup cpp-path
     autocmd!
     autocmd FileType cpp setlocal path+=.,/usr/include,/usr/local/include,/usr/include/c++/4.8.1
 augroup END
-
 
 """ NeoBundle """
 set nocompatible
@@ -100,8 +104,6 @@ if has('vim_starting')
   call neobundle#rc(expand('~/.vim/bundle/'))
 endif
 
-filetype plugin indent on
-syntax on
 
 " Installation check
 if neobundle#exists_not_installed_bundles()
@@ -133,6 +135,7 @@ NeoBundle 'spolu/dwm.vim'
 NeoBundle 'tyru/caw.vim'
 NeoBundle 'Yggdroot/indentLine'
 "NeoBundle 'tpope/vim-surround'
+NeoBundle 'AnsiEsc.vim'
 NeoBundle 'Shougo/neocomplete.vim'
 NeoBundleLazy 'osyo-manga/vim-marching', {
             \ 'depends' : ['Shougo/vimproc.vim', 'osyo-manga/vim-reunions'],
@@ -147,6 +150,7 @@ NeoBundleLazy 'osyo-manga/vim-stargate', {
 NeoBundle 'jpalardy/vim-slime'
 NeoBundle 'troydm/easybuffer.vim'
 NeoBundle 'osyo-manga/vim-over'
+NeoBundle 'vim-scripts/nginx.vim'
 "NeoBundle 'https://bitbucket.org/kovisoft/slimv'
 " git
 NeoBundle 'tpope/vim-fugitive'
@@ -162,6 +166,7 @@ NeoBundle 'davidhalter/jedi-vim'
 "" javascript / node.js
 NeoBundle 'jelera/vim-javascript-syntax'
 NeoBundle 'kchmck/vim-coffee-script'
+NeoBundle 'groenewege/vim-less'
 NeoBundle 'moll/vim-node'
 NeoBundle 'digitaltoad/vim-jade'
 "" Haskell
@@ -177,6 +182,7 @@ NeoBundle 'hail2u/vim-css3-syntax'
 "NeoBundle 'AtsushiM/search-parent.vim'
 "NeoBundle 'AtsushiM/sass-compile.vim'
 NeoBundle 'othree/html5.vim'
+NeoBundle 'lilydjwg/colorizer'
 " css
 "NeoBundle 'skammer/vim-css-color'
 "" colorscheme
@@ -184,6 +190,15 @@ NeoBundle 'nanotech/jellybeans.vim'
 "NeoBundle 'vim-scripts/twilight'
 NeoBundle 'w0ng/vim-hybrid'
 NeoBundle 'altercation/vim-colors-solarized'
+" LaTeX
+NeoBundle 'git://git.code.sf.net/p/vim-latex/vim-latex'
+
+filetype plugin indent on
+
+" プラグインのチェック
+NeoBundleCheck
+
+syntax on
 
 " git protocol
 let g:neobundle_default_git_protocol='git'
@@ -291,7 +306,7 @@ hi EasyMotionTarget ctermbg=none ctermfg=red
 hi EasyMotionShade  ctermbg=none ctermfg=blue
 
 "" ----- lightline.vim -----
-set guifont=Ricty\ 10
+set guifont=Ricty\ for\ Powerline\ 10
 let g:lightline = {
       \ 'colorscheme': 'wombat',
       \ 'component': {
@@ -344,17 +359,30 @@ let g:quickrun_config = {
       \ "cpp/g++" : {
       \     "cmdopt" : "-std=c++11"
       \ },
+      \ "html" : {
+      \     "exec" : "xdg-open %s:p",
+      \ },
+      \ "tex": {
+      \     "command" : "platex",
+      \     "exec" : [
+      \         "%c %s", "%c %s",
+      \         "dvipdfmx %s:r.dvi",
+      \         "xdg-open %s:r.pdf"
+      \     ],
+      \ },
       \}
 " <C-c>でquickrunを強制終了
 nnoremap <expr><silent> <C-c> quickrun#is_running() ? quickrun#sweep_scessions() : "\<C-c>"
 " F5 running
 nnoremap <silent><F5> :QuickRun -mode n<CR>
 vnoremap <silent><F5> :QuickRun -mode v<CR>
+" Vim-LaTeX用にF6
+autocmd FileType tex nnoremap <silent><F6> :QuickRun -mode n<CR>
+autocmd FileType tex vnoremap <silent><F6> :QuickRun -mode v<CR>
 " qr = QuickRun
 ca qr QuickRun
-
-"" ----- ghc-mod -----
-let $PATH = $PATH . ':' . expand("~/.cabal/bin")
+" 出力結果のエスケープシーケンス変換
+autocmd FileType quickrun AnsiEsc
 
 "" ----- syntastic -----
 " use c++11
@@ -364,8 +392,7 @@ let g:syntastic_python_checkers = ['pyflakes', 'pep8']
 " pep8のErrorCheck僕には厳しいので少し緩めに
 let g:syntastic_python_pep8_args='--ignore=E302,E501,E225,E226,E228,E265,E702,E703'
 " SyntasticToggleMode を F4 で切り替え
-nnoremap <silent><F4> :SyntasticToggleMode<CR>
-vnoremap <silent><F4> :SyntasticToggleMode<CR>
+noremap <silent><F4> :SyntasticToggleMode<CR>
 
 " ----- caw -----
 " \c でコメントアウト
@@ -374,6 +401,44 @@ vmap \c <Plug>(caw:I:toggle)
 " \C でコメントアウトの解除
 nmap \C <Plug>(caw:I:uncomment)
 vmap \C <Plug>(caw:I:uncomment)
+
+" ----- nginx.vim -----
+au BufRead,BufNewFile /etc/nginx/* set ft=nginx
+
+" ----- Vim-LaTeX -----
+set shellslash
+set grepprg=grep\ -nH\ $*
+let g:tex_flavor='latex'
+let g:Imap_UsePlaceHolders = 1
+let g:Imap_DeleteEmptyPlaceHolders = 1
+let g:Imap_StickyPlaceHolders = 0
+let g:Tex_DefaultTargetFormat = 'pdf'
+let g:Tex_MultipleCompileFormats='dvi,pdf'
+"let g:Tex_FormatDependency_pdf = 'pdf'
+let g:Tex_FormatDependency_pdf = 'dvi,pdf'
+"let g:Tex_FormatDependency_pdf = 'dvi,ps,pdf'
+let g:Tex_FormatDependency_ps = 'dvi,ps'
+let g:Tex_CompileRule_pdf = 'ptex2pdf -u -l -ot "-synctex=1 -interaction=nonstopmode -file-line-error-style" $*'
+"let g:Tex_CompileRule_pdf = 'pdflatex -synctex=1 -interaction=nonstopmode -file-line-error-style $*'
+"let g:Tex_CompileRule_pdf = 'lualatex -synctex=1 -interaction=nonstopmode -file-line-error-style $*'
+"let g:Tex_CompileRule_pdf = 'luajitlatex -synctex=1 -interaction=nonstopmode -file-line-error-style $*'
+"let g:Tex_CompileRule_pdf = 'xelatex -synctex=1 -interaction=nonstopmode -file-line-error-style $*'
+"let g:Tex_CompileRule_pdf = 'ps2pdf $*.ps'
+let g:Tex_CompileRule_ps = 'dvips -Ppdf -o $*.ps $*.dvi'
+let g:Tex_CompileRule_dvi = 'uplatex -synctex=1 -interaction=nonstopmode -file-line-error-style $*'
+let g:Tex_BibtexFlavor = 'upbibtex'
+let g:Tex_MakeIndexFlavor = 'mendex -U $*.idx'
+let g:Tex_UseEditorSettingInDVIViewer = 1
+let g:Tex_ViewRule_pdf = 'xdg-open'
+"let g:Tex_ViewRule_pdf = 'evince'
+"let g:Tex_ViewRule_pdf = 'okular --unique'
+"let g:Tex_ViewRule_pdf = 'zathura -s -x "vim --servername synctex -n --remote-silent +\%{line} \%{input}"'
+"let g:Tex_ViewRule_pdf = 'qpdfview --unique'
+"let g:Tex_ViewRule_pdf = 'texworks'
+"let g:Tex_ViewRule_pdf = 'mupdf'
+"let g:Tex_ViewRule_pdf = 'firefox -new-window'
+"let g:Tex_ViewRule_pdf = 'chromium --new-window'
+let g:tex_conceal=''
 
 " after command
 set showcmd
