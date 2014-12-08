@@ -306,14 +306,12 @@ hi EasyMotionTarget ctermbg=none ctermfg=red
 hi EasyMotionShade  ctermbg=none ctermfg=blue
 
 "" ----- lightline.vim -----
-set guifont=Ricty\ for\ Powerline\ 10
+set guifont=Ricty\ 10
 let g:lightline = {
       \ 'colorscheme': 'wombat',
       \ 'component': {
       \   'readonly': '%{&readonly?"x":""}',
       \ },
-      \ 'separator': { 'left': "\u2b80", 'right': "\u2b82" },
-      \ 'subseparator': { 'left': "\u2b81", 'right': "\u2b83" }
       \ }
 
 """" ----- neosnippet -----
