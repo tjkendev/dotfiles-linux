@@ -3,7 +3,10 @@
 # for examples
 
 # If not running interactively, don't do anything
-[ -z "$PS1" ] && return
+case $- in
+    *i*) ;;
+      *) return;;
+esac
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -28,7 +31,7 @@ shopt -s checkwinsize
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
 # set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
+if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
     debian_chroot=$(cat /etc/debian_chroot)
 fi
 
@@ -43,7 +46,7 @@ esac
 # uncomment for a colored prompt, if the terminal has the capability; turned
 # off by default to not distract the user: the focus in a terminal window
 # should be on the output of commands, not on the prompt
-#force_color_prompt=yes
+force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
@@ -57,25 +60,24 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    #PS1='${debian_chroot:+($debian_chroot)}\[\033[4m\]\[\033[1;32m\]\u@\h\[\033[00m\]:\[\033[1;33m\]\w\[\033[00m\] \$ '
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[1;42m\]\u@\h\[\033[00m\]:\[\033[1;33m\]\w\[\033[00m\] \$ '
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;42m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
 unset color_prompt force_color_prompt
 
 # If this is an xterm set the title to user@host:dir
-case "$TERM" in
-xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-    ;;
-*)
-    ;;
-esac
+#case "$TERM" in
+#xterm*|rxvt*)
+#    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+#    ;;
+#*)
+#    ;;
+#esac
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dir_colors && eval "$(dircolors -b ~/.dir_colors)" || eval "$(dircolors -b)"
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
     alias ls='ls --color=auto'
     #alias dir='dir --color=auto'
     #alias vdir='vdir --color=auto'
@@ -106,14 +108,13 @@ fi
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
-if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
+  fi
 fi
-
-
-# Math Kernel Library
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/mkl/lib/intel64:/opt/intel/lib/intel64
-source /opt/intel/bin/compilervars.sh intel64
 
 # eclipse
 export PATH="/usr/local/eclipse:$PATH"
@@ -122,30 +123,14 @@ export PATH="/usr/local/eclipse:$PATH"
 alias mozc-config="/usr/lib/mozc/mozc_tool -mode=config_dialog"
 alias mozc-dict="/usr/lib/mozc/mozc_tool --mode=dictionary_tool"
 
-# wine
-WINENOPULSE=1
-# wine32
-alias wine32='WINEARCH=win32 WINEPREFIX=~/.wine32 wine'
-alias winebuild32='WINEARCH=win32 WINEPREFIX=~/.wine32 winebuild'
-alias winecfg32='WINEARCH=win32 WINEPREFIX=~/.wine32 winecfg'
-alias wineconsole32='WINEARCH=win32 WINEPREFIX=~/.wine32 wineconsole'
-alias winecpp32='WINEARCH=win32 WINEPREFIX=~/.wine32 winecpp'
-alias winedbg32='WINEARCH=win32 WINEPREFIX=~/.wine32 winedbg'
-alias winedump32='WINEARCH=win32 WINEPREFIX=~/.wine32 winedump'
-alias winefile32='WINEARCH=win32 WINEPREFIX=~/.wine32 winefile'
-alias winegcc32='WINEARCH=win32 WINEPREFIX=~/.wine32 winegcc'
-alias wineg++32='WINEARCH=win32 WINEPREFIX=~/.wine32 wineg++'
-alias winepath32='WINEARCH=win32 WINEPREFIX=~/.wine32 winepath'
-alias winetricks32='WINEARCH=win32 WINEPREFIX=~/.wine32 winetricks'
-
 alias a='./a.out'
-
-# nvm
-source ~/.nvm/nvm.sh
 
 # rbenv
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
+
+# nvm
+source ~/.nvm/nvm.sh
 
 # cabal
 export PATH="$PATH:~/.cabal/bin"
