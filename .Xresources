@@ -1,0 +1,7 @@
+!! urxvt/rxvt
+Rxvt*font: xft:Inconsolata for Powerline:pixelsize=14
+Rxvt*color4: #5566FF
+Rxvt*color12: #7799FF
+Rxvt*color9: #FF2E2E
+Rxvt*color11: #FFFF22
+Rxvt*fading: 50

@@ -117,6 +117,8 @@ source /opt/intel/bin/compilervars.sh intel64
 
 # eclipse
 export PATH="/usr/local/eclipse:$PATH"
+alias eclipse-indigo="/usr/local/eclipse-indigo/eclipse"
+alias sudo-eclipse-indigo="sudo /usr/local/eclipse-indigo/eclipse"
 
 # mozc
 alias mozc-config="/usr/lib/mozc/mozc_tool -mode=config_dialog"
@@ -138,6 +140,12 @@ alias wineg++32='WINEARCH=win32 WINEPREFIX=~/.wine32 wineg++'
 alias winepath32='WINEARCH=win32 WINEPREFIX=~/.wine32 winepath'
 alias winetricks32='WINEARCH=win32 WINEPREFIX=~/.wine32 winetricks'
 
+# ANTLR
+export CLASSPATH="/usr/local/lib/antlr-4.5-complete.jar:$CLASSPATH"
+alias antlr4='java -Xmx500M -cp "/usr/local/lib/antlr-4.5-complete.jar:$CLASSPATH" org.antlr.v4.Tool'
+alias grun='java org.antlr.v4.runtime.misc.TestRig'
+
+# Windowsの"a --> a.exe"みたいな感じ
 alias a='./a.out'
 
 # nvm

@@ -1,6 +1,11 @@
 " .vimrc for linux(Ubuntu)
 scriptencoding utf-8
 
+" autocmdは一度だけ
+augroup vimrc
+  autocmd!
+augroup END
+
 """ Editor """
 set clipboard=unnamedplus,autoselect  " '+'とクリップボード共有
 set smarttab
@@ -68,6 +73,9 @@ set wildmenu    " コマンドラインモードでTabキーでファイル名�
 set showcmd     " 入力中のコマンドをステータスに表示
 set magic       " 検索時に正規表現を利用する
 
+" ESC2回で検索ハイライト消す
+nnoremap <silent> <Esc><Esc> :<C-u>nohlsearch<CR><Esc>
+
 """ Detail """
 " 不可視文字の設定
 set listchars=tab:▸\ ,eol:\ ,trail:-,extends:»,precedes:«,nbsp:%
@@ -84,11 +92,28 @@ let g:java_highlight_functions=1
 
 " coffeescript
 au BufRead,BufNewFile,BufReadPre *.coffee   set filetype=coffee
-autocmd FileType coffee     setlocal sw=2 sts=2 ts=2 et
+autocmd vimrc FileType coffee     setlocal sw=2 sts=2 ts=2 et
+
+" Jython
+autocmd BufRead,BufNewFile,BufReadPre *.jy set filetype=python
 
 """ source ~/.vimrc
 ca svimrc source<Space>~/.vimrc
 ca vdiffsplit vertical<Space>diffsplit
+
+"" -b付きでバイナリモード
+"" http://d.hatena.ne.jp/rdera/20081022/1224682665
+augroup BinaryXXD
+  autocmd!
+  autocmd BufReadPre  *.bin let &binary =1
+  autocmd BufReadPost * if &binary | silent %!xxd -g 1
+  autocmd BufReadPost * set ft=xxd | endif
+  autocmd BufWritePre * if &binary | execute "%!xxd -r" | endif
+  autocmd BufWritePost * if &binary | silent %!xxd -g 1
+  autocmd BufWritePost * set nomod | endif
+augroup END
+"" BinaryXXDを無効にしたい場合
+command InvalidBinary :autocmd! BinaryXXD
 
 augroup cpp-path
     autocmd!
@@ -96,14 +121,14 @@ augroup cpp-path
 augroup END
 
 """ NeoBundle """
-set nocompatible
 filetype off
 
 if has('vim_starting')
+  set nocompatible
   set runtimepath+=~/.vim/bundle/neobundle.vim
-  call neobundle#rc(expand('~/.vim/bundle/'))
 endif
 
+call neobundle#begin(expand('~/.vim/bundle/'))
 
 " Installation check
 if neobundle#exists_not_installed_bundles()
@@ -126,6 +151,7 @@ NeoBundle 'Shougo/vimproc', {
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'Shougo/unite.vim'
+NeoBundle 'h1mesuke/unite-outline'
 NeoBundle 'Shougo/vimshell'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle "jceb/vim-hier"
@@ -134,6 +160,8 @@ NeoBundle 'vim-scripts/VimClojure'
 NeoBundle 'spolu/dwm.vim'
 NeoBundle 'tyru/caw.vim'
 NeoBundle 'Yggdroot/indentLine'
+NeoBundle 'sudo.vim'
+NeoBundle 'soramugi/auto-ctags.vim'
 "NeoBundle 'tpope/vim-surround'
 NeoBundle 'AnsiEsc.vim'
 NeoBundle 'Shougo/neocomplete.vim'
@@ -151,6 +179,7 @@ NeoBundle 'jpalardy/vim-slime'
 NeoBundle 'troydm/easybuffer.vim'
 NeoBundle 'osyo-manga/vim-over'
 NeoBundle 'vim-scripts/nginx.vim'
+NeoBundle 'rollxx/vim-antlr'
 "NeoBundle 'https://bitbucket.org/kovisoft/slimv'
 " git
 NeoBundle 'tpope/vim-fugitive'
@@ -161,6 +190,14 @@ NeoBundle 'tpope/vim-endwise'
 NeoBundleLazy 'vim-jp/cpp-vim', {
       \ 'autoload' : {'filetypes' : 'cpp'}
       \}
+" javacomplete
+NeoBundleLazy 'vim-scripts/javacomplete', {
+\   'build': {
+\       'cygwin': 'javac autoload/Reflection.java',
+\       'mac': 'javac autoload/Reflection.java',
+\       'unix': 'javac autoload/Reflection.java',
+\   },
+\}
 " python
 NeoBundle 'davidhalter/jedi-vim'
 "" javascript / node.js
@@ -177,7 +214,7 @@ NeoBundle 'ujihisa/ref-hoogle'
 NeoBundle 'ujihisa/unite-haskellimport'
 " html
 NeoBundle 'mattn/emmet-vim'
-"NeoBundle 'tyru/open-browser.vim'
+NeoBundle 'tyru/open-browser.vim'
 NeoBundle 'hail2u/vim-css3-syntax'
 "NeoBundle 'AtsushiM/search-parent.vim'
 "NeoBundle 'AtsushiM/sass-compile.vim'
@@ -185,6 +222,10 @@ NeoBundle 'othree/html5.vim'
 NeoBundle 'lilydjwg/colorizer'
 " css
 "NeoBundle 'skammer/vim-css-color'
+"" gnuplot
+NeoBundle 'vim-scripts/gnuplot.vim'
+"" plantuml
+NeoBundle 'aklt/plantuml-syntax'
 "" colorscheme
 NeoBundle 'nanotech/jellybeans.vim'
 "NeoBundle 'vim-scripts/twilight'
@@ -192,6 +233,16 @@ NeoBundle 'w0ng/vim-hybrid'
 NeoBundle 'altercation/vim-colors-solarized'
 " LaTeX
 NeoBundle 'git://git.code.sf.net/p/vim-latex/vim-latex'
+" ASM
+NeoBundle 'shiracamus/vim-syntax-x86-objdump-d'
+" Web
+NeoBundle 'mattn/webapi-vim'
+NeoBundle 'basyura/bitly.vim'
+" Twitter
+NeoBundle 'basyura/twibill.vim'
+NeoBundle 'basyura/TweetVim'
+
+call neobundle#end()
 
 filetype plugin indent on
 
@@ -284,6 +335,16 @@ call neocomplete#custom_source('_', 'matchers', ['matcher_head'])
 "inoremap <expr><C-u>  neocomplete#undo_completion()
 "inoremap <expr><C-h>  neocomplete#smart_close_popup().'\<C-h>'
 
+"" ----- jedi-vim -----
+autocmd vimrc FileType python setlocal omnifunc=jedi#completions
+"let g:jedi#popup_select_first = 0
+let g:jedi#auto_vim_configuration = 0
+let g:neocomplete#force_omni_input_patterns.python = '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
+" docstringは表示しない
+autocmd vimrc FileType python setlocal completeopt-=preview
+" 勝手に自動補完しない
+let g:jedi#completions_enabled = 0
+
 "" ----- vim-marching -----
 let g:marching_enable_neocomplete = 1
 let g:marching_clang_command_option="-std=c++1y"
@@ -359,6 +420,12 @@ let g:quickrun_config = {
       \ "cpp/g++" : {
       \     "cmdopt" : "-std=c++11"
       \ },
+      \ "asm" : {
+      \     "command" : "gcc",
+      \     "exec" : [
+      \       "%c -m32 %s -o q.out", "./q.out"
+      \     ]
+      \ },
       \ "html" : {
       \     "exec" : "xdg-open %s:p",
       \ },
@@ -377,16 +444,18 @@ nnoremap <expr><silent> <C-c> quickrun#is_running() ? quickrun#sweep_scessions()
 nnoremap <silent><F5> :QuickRun -mode n<CR>
 vnoremap <silent><F5> :QuickRun -mode v<CR>
 " Vim-LaTeX用にF6
-autocmd FileType tex nnoremap <silent><F6> :QuickRun -mode n<CR>
-autocmd FileType tex vnoremap <silent><F6> :QuickRun -mode v<CR>
+autocmd vimrc FileType tex nnoremap <silent><F6> :QuickRun -mode n<CR>
+autocmd vimrc FileType tex vnoremap <silent><F6> :QuickRun -mode v<CR>
 " qr = QuickRun
 ca qr QuickRun
 " 出力結果のエスケープシーケンス変換
-autocmd FileType quickrun AnsiEsc
+autocmd vimrc FileType quickrun AnsiEsc
 
 "" ----- syntastic -----
 " use c++11
 let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libc++'
+" ASM use -m32
+let g:syntastic_asm_compiler_options = '-m32'
 " use pyflakes and pep8
 let g:syntastic_python_checkers = ['pyflakes', 'pep8']
 " pep8のErrorCheck僕には厳しいので少し緩めに
@@ -402,8 +471,22 @@ vmap \c <Plug>(caw:I:toggle)
 nmap \C <Plug>(caw:I:uncomment)
 vmap \C <Plug>(caw:I:uncomment)
 
+" ----- auto-ctags -----
+" 保存時に勝手にtagsファイルを作成する
+let g:auto_ctags = 1
+" tagsを作成するディレクトリを指定
+let g:auto_ctags_directory_list = ['.git', '.svn']
+" 作成されたtagsを別途読み取る
+let g:auto_ctags_filetype_mode = 1
+
 " ----- nginx.vim -----
-au BufRead,BufNewFile /etc/nginx/* set ft=nginx
+autocmd vimrc BufRead,BufNewFile /etc/nginx/* set ft=nginx
+
+" ----- gnuplot.vim ----
+autocmd vimrc BufRead,BufNewFile *.plt set filetype=gnuplot
+
+"" vim-antlr
+autocmd BufRead,BufNewFile *.g :set syntax=antlr3
 
 " ----- Vim-LaTeX -----
 set shellslash
@@ -439,6 +522,11 @@ let g:Tex_ViewRule_pdf = 'xdg-open'
 "let g:Tex_ViewRule_pdf = 'firefox -new-window'
 "let g:Tex_ViewRule_pdf = 'chromium --new-window'
 let g:tex_conceal=''
+
+"" TweetVim
+" ツイート内容は改行する
+autocmd FileType tweetvim :set wrap
+
 
 " after command
 set showcmd

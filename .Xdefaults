@@ -1,0 +1,23 @@
+! .Xdefaults
+urxvt*depth: 32
+urxvt*foreground: snow
+urxvt*background: rgba:1111/1111/1111/dddd
+!urxvt*background: [80]#000000
+urxvt*shading: 80
+urxvt*tintColor: white
+
+! ubuntuでtransparent, inheritPixmap有効にすると
+! 背景が壁紙で透けて使いにくい
+!urxvt*transparent: true
+!urxvt*inheritPixmap: true
+
+! Term Name
+urxvt*termName: rxvt
+
+! ScrollBar
+urxvt*scrollBar: true
+urxvt*scrollBar_right: true
+
+! URL Launcher
+urxvt*urlLaunche: google-chrome
+
