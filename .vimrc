@@ -12,7 +12,7 @@ set smarttab
 set tabstop=2    " タブ幅
 set shiftwidth=2 " タブを挿入するときの幅
 set expandtab    " タブをスペースとして扱う
-set softtabstop=0 " 
+set softtabstop=0 "
 set shiftround   " インデントはshiftwidthの倍数
 set infercase
 "set virtualedit=all
@@ -76,9 +76,23 @@ set magic       " 検索時に正規表現を利用する
 " ESC2回で検索ハイライト消す
 nnoremap <silent> <Esc><Esc> :<C-u>nohlsearch<CR><Esc>
 
+"" カーソル操作で o+(A|B|C|D) しない ""
+if !has('gui_running')
+  set notimeout
+  set ttimeout
+  set timeoutlen=100
+endif
+
 """ Detail """
 " 不可視文字の設定
 set listchars=tab:▸\ ,eol:\ ,trail:-,extends:»,precedes:«,nbsp:%
+
+" 行末空白
+augroup HighlightTrailingSpaces
+  autocmd!
+  autocmd VimEnter,WinEnter,ColorScheme * highlight TrailingSpaces term=underline guibg=Red ctermbg=Red
+  autocmd VimEnter,WinEnter * match TrailingSpaces /\s\+$/
+augroup END
 
 " java highlight setting
 let g:java_highlight_all=1
@@ -258,7 +272,7 @@ let g:neobundle_default_git_protocol='git'
 " The prefix key.
 nnoremap    [unite]   <Nop>
 nmap    <Leader>f [unite]
- 
+
 " unite.vim keymap
 " https://github.com/alwei/dotfiles/blob/3760650625663f3b08f24bc75762ec843ca7e112/.vimrc
 nnoremap [unite]u  :<C-u>Unite -no-split<Space>
@@ -270,7 +284,7 @@ nnoremap <silent> ,vr :UniteResume<CR>
 
 " vinarise
 let g:vinarise_enable_auto_detect = 1
- 
+
 " unite-build map
 nnoremap <silent> ,vb :Unite build<CR>
 nnoremap <silent> ,vcb :Unite build:!<CR>
@@ -526,7 +540,6 @@ let g:tex_conceal=''
 "" TweetVim
 " ツイート内容は改行する
 autocmd FileType tweetvim :set wrap
-
 
 " after command
 set showcmd
