@@ -1,2 +1,5 @@
 .vim/bundle
 .vim/.netrwhist
+# .config
+.config/*
+!.config/nvim

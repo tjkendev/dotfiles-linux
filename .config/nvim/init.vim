@@ -7,7 +7,7 @@ augroup vimrc
 augroup END
 
 """ Editor """
-set clipboard=unnamedplus,autoselect  " '+'とクリップボード共有
+set clipboard+=unnamedplus " クリップボード
 set smarttab
 set tabstop=2    " タブ幅
 set shiftwidth=2 " タブを挿入するときの幅
@@ -32,9 +32,6 @@ set list        " 不可視文字の可視化
 set cursorline  " カーソルのある行を強調(7.4~)
 "set cursorcolumn " カーソルのある列を強調
 set laststatus=2 " ステータスラインを常に表示
-if !has('gui_running')
-  set t_Co=256
-endif
 set showmatch   " 対応するカッコをハイライト表示
 set matchtime=3 " 対応括弧のハイライト表示を3秒に
 " set title       " > Vim を使ってくれてありがとう <
@@ -60,7 +57,6 @@ set mouse=a     " マウス機能有効化
 set nobackup    " バックアップ不要
 "set backupdir=~/.vimbackup " バックアップディレクトリ
 set noswapfile  " スワップファイル不要
-set vb t_vb=    " ビープ音Off
 set shortmess& shortmess+=I     " 起動時のメッセージを消す
 set noimdisable " IMを使う
 set iminsert=0  " 入力モードで自動的に日本語を使わない
@@ -138,7 +134,6 @@ augroup END
 filetype off
 
 if has('vim_starting')
-  set nocompatible
   set runtimepath+=~/.vim/bundle/neobundle.vim
 endif
 

@@ -140,6 +140,12 @@ alias wineg++32='WINEARCH=win32 WINEPREFIX=~/.wine32 wineg++'
 alias winepath32='WINEARCH=win32 WINEPREFIX=~/.wine32 winepath'
 alias winetricks32='WINEARCH=win32 WINEPREFIX=~/.wine32 winetricks'
 
+# Java
+JAVA_HOME=$(readlink -f /usr/bin/javac | sed "s:/bin/javac::")
+export JAVA_HOME
+PATH=$PATH:$JAVA_HOME/bin
+export PATH
+
 # ANTLR
 export CLASSPATH="/usr/local/lib/antlr-4.5-complete.jar:$CLASSPATH"
 alias antlr4='java -Xmx500M -cp "/usr/local/lib/antlr-4.5-complete.jar:$CLASSPATH" org.antlr.v4.Tool'
@@ -157,3 +163,14 @@ eval "$(rbenv init -)"
 
 # cabal
 export PATH="$PATH:~/.cabal/bin"
+
+# scala
+export PATH="/usr/local/scala-2.11.7/bin:$PATH"
+
+# play framework
+export PLAY_HOME=/usr/local/play
+export PATH=$PATH:$PLAY_HOME
+
+# pbcopy
+alias pbcopy='xsel --clipboard --input'
+
