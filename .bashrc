@@ -161,6 +161,11 @@ source ~/.nvm/nvm.sh
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
+# pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+
 # cabal
 export PATH="$PATH:~/.cabal/bin"
 
