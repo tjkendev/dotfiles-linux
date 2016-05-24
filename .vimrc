@@ -134,6 +134,8 @@ augroup cpp-path
     autocmd FileType cpp setlocal path+=.,/usr/include,/usr/local/include,/usr/include/c++/4.8.1
 augroup END
 
+let PATH = expand("~/.pyenv/shims") . ":" . $PATH
+
 """ NeoBundle """
 filetype off
 
@@ -214,6 +216,11 @@ NeoBundleLazy 'vim-scripts/javacomplete', {
 \}
 " python
 NeoBundle 'davidhalter/jedi-vim'
+NeoBundleLazy "lambdalisue/vim-pyenv", {
+      \ "depends": ['davidhalter/jedi-vim'],
+      \ "autoload": {
+      \   "filetypes": ["python", "python3", "djangohtml"]
+      \ }}
 "" javascript / node.js
 NeoBundle 'jelera/vim-javascript-syntax'
 NeoBundle 'kchmck/vim-coffee-script'
@@ -238,6 +245,15 @@ NeoBundle 'othree/html5.vim'
 NeoBundle 'lilydjwg/colorizer'
 " css
 "NeoBundle 'skammer/vim-css-color'
+"" TypeScript
+NeoBundle 'leafgarland/typescript-vim', {
+      \ 'autoload': {
+      \   'filetypes': ['typescript']
+      \}}
+NeoBundleLazy 'clausreinke/typescript-tools.vim', {
+      \ 'autoload' : {
+      \   'filetypes' : ['typescript'] }
+      \}
 "" gnuplot
 NeoBundle 'vim-scripts/gnuplot.vim'
 "" plantuml
@@ -248,7 +264,7 @@ NeoBundle 'nanotech/jellybeans.vim'
 NeoBundle 'w0ng/vim-hybrid'
 NeoBundle 'altercation/vim-colors-solarized'
 " LaTeX
-NeoBundle 'git://git.code.sf.net/p/vim-latex/vim-latex'
+NeoBundle 'https://github.com/vim-latex/vim-latex'
 " ASM
 NeoBundle 'shiracamus/vim-syntax-x86-objdump-d'
 " Web
@@ -268,7 +284,7 @@ NeoBundleCheck
 syntax on
 
 " git protocol
-let g:neobundle_default_git_protocol='git'
+"let g:neobundle_default_git_protocol='git'
 
 "" ----- unite.vim -----
 " The prefix key.

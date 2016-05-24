@@ -112,8 +112,8 @@ fi
 
 
 # Math Kernel Library
-#export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/mkl/lib/intel64:/opt/intel/lib/intel64
-#source /opt/intel/bin/compilervars.sh intel64
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/mkl/lib/intel64:/opt/intel/lib/intel64
+source /opt/intel/bin/compilervars.sh intel64
 
 # eclipse
 export PATH="/usr/local/eclipse:$PATH"
@@ -165,6 +165,12 @@ eval "$(rbenv init -)"
 export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
+
+# nodebrew
+export PATH=$HOME/.nodebrew/current/bin:$PATH
+
+# npm
+#export PATH=$(npm bin -g):$PATH
 
 # cabal
 export PATH="$PATH:~/.cabal/bin"
