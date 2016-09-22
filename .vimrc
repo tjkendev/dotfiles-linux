@@ -112,8 +112,8 @@ autocmd vimrc FileType coffee     setlocal sw=2 sts=2 ts=2 et
 autocmd BufRead,BufNewFile,BufReadPre *.jy set filetype=python
 
 """ source ~/.vimrc
-ca svimrc source<Space>~/.vimrc
-ca vdiffsplit vertical<Space>diffsplit
+ca sv source<Space>~/.vimrc
+ca vds vertical<Space>diffsplit
 
 "" -b付きでバイナリモード
 "" http://d.hatena.ne.jp/rdera/20081022/1224682665
@@ -136,7 +136,7 @@ augroup END
 
 let PATH = expand("~/.pyenv/shims") . ":" . $PATH
 
-""" dein """
+" ----- dein -----
 if &compatible
   set nocompatible               " Be iMproved
 endif
@@ -151,7 +151,7 @@ call dein#begin('~/.vim/dein')
 " Required:
 call dein#add('Shougo/dein.vim')
 
-call dein#add( 'Shougo/vimproc', {
+call dein#add( 'Shougo/vimproc.vim', {
       \ 'build' : 'make -f make_unix.mak'
       \ })
 call dein#add('itchyny/lightline.vim')
@@ -172,7 +172,7 @@ call dein#add('soramugi/auto-ctags.vim')
 call dein#add('AnsiEsc.vim')
 call dein#add('Shougo/neocomplete.vim')
 call dein#add( 'osyo-manga/vim-marching', {
-            \ 'depends' : ['Shougo/vimproc.vim', 'osyo-manga/vim-reunions'],
+            \ 'depends' : ['vimproc', 'vim-reunions'],
             \ 'on_ft' : ['c', 'cpp']
             \ })
 "call dein#add('Shougo/neosnippet')
@@ -201,9 +201,12 @@ call dein#add('vim-scripts/javacomplete', {
       \   'build': 'javac autoload/Reflection.java'
       \})
 " python
+call dein#add('lambdalisue/vim-django-support', {
+      \ "on_ft": ["python", "python3", "djangohtml"]
+      \ })
 call dein#add('davidhalter/jedi-vim')
 call dein#add("lambdalisue/vim-pyenv", {
-      \ "depends": ['davidhalter/jedi-vim'],
+      \ "depends": ['jedi-vim'],
       \ "on_ft": ["python", "python3", "djangohtml"]
       \ })
 "" javascript / node.js
@@ -247,7 +250,7 @@ call dein#add('nanotech/jellybeans.vim')
 call dein#add('w0ng/vim-hybrid')
 call dein#add('altercation/vim-colors-solarized')
 " LaTeX
-call dein#add('https://github.com/vim-latex/vim-latex')
+call dein#add('vim-latex/vim-latex')
 " ASM
 call dein#add('shiracamus/vim-syntax-x86-objdump-d')
 " Web
@@ -268,9 +271,6 @@ syntax enable
 if dein#check_install()
   call dein#install()
 endif
-
-" git protocol
-"let g:neobundle_default_git_protocol='git'
 
 "" ----- unite.vim -----
 " The prefix key.
@@ -492,11 +492,11 @@ noremap <silent><F4> :SyntasticToggleMode<CR>
 
 " ----- caw -----
 " \c でコメントアウト
-nmap \c <Plug>(caw:I:toggle)
-vmap \c <Plug>(caw:I:toggle)
+nmap \c <Plug>(caw:zeropos:toggle)
+vmap \c <Plug>(caw:zeropos:toggle)
 " \C でコメントアウトの解除
-nmap \C <Plug>(caw:I:uncomment)
-vmap \C <Plug>(caw:I:uncomment)
+nmap \C <Plug>(caw:zeropos:uncomment)
+vmap \C <Plug>(caw:zeropos:uncomment)
 
 " ----- auto-ctags -----
 " 保存時に勝手にtagsファイルを作成する
@@ -550,7 +550,7 @@ let g:Tex_ViewRule_pdf = 'xdg-open'
 "let g:Tex_ViewRule_pdf = 'chromium --new-window'
 let g:tex_conceal=''
 
-"" TweetVim
+" ----- TweetVim -----
 " ツイート内容は改行する
 autocmd FileType tweetvim :set wrap
 
