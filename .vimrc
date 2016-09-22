@@ -136,152 +136,138 @@ augroup END
 
 let PATH = expand("~/.pyenv/shims") . ":" . $PATH
 
-""" NeoBundle """
-filetype off
-
-if has('vim_starting')
-  set nocompatible
-  set runtimepath+=~/.vim/bundle/neobundle.vim
+""" dein """
+if &compatible
+  set nocompatible               " Be iMproved
 endif
 
-call neobundle#begin(expand('~/.vim/bundle/'))
+" Required:
+set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim
 
-" Installation check
-if neobundle#exists_not_installed_bundles()
-  echomsg 'Not installed bundles : ' .
-  	\ string(neobundle#get_not_installed_bundle_names())
-  echomsg 'Please execute ":NeoBundleInstall" command.'
-  "finish
-endif
+" Required:
+call dein#begin('~/.vim/dein')
 
-" base
-NeoBundleFetch 'Shougo/neobundle.vim'
-NeoBundle 'Shougo/vimproc', {
-      \ 'build' : {
-      \     'windows' : 'tools\\update-dll-mingw',
-      \     'cygwin' : 'make -f make_cygwin.mak',
-      \     'mac' : 'make -f make_mac.mak',
-      \     'unix' : 'make -f make_unix.mak',
-      \    },
-      \ }
-NeoBundle 'itchyny/lightline.vim'
-NeoBundle 'Lokaltog/vim-easymotion'
-NeoBundle 'Shougo/unite.vim'
-NeoBundle 'h1mesuke/unite-outline'
-NeoBundle 'Shougo/vimshell'
-NeoBundle 'thinca/vim-quickrun'
-NeoBundle "jceb/vim-hier"
-NeoBundle 'scrooloose/syntastic'
-NeoBundle 'vim-scripts/VimClojure'
-"NeoBundle 'spolu/dwm.vim'
-NeoBundle 'tyru/caw.vim'
-NeoBundle 'Yggdroot/indentLine'
-NeoBundle 'sudo.vim'
-NeoBundle 'soramugi/auto-ctags.vim'
-"NeoBundle 'tpope/vim-surround'
-NeoBundle 'AnsiEsc.vim'
-NeoBundle 'Shougo/neocomplete.vim'
-NeoBundleLazy 'osyo-manga/vim-marching', {
+" Let dein manage dein
+" Required:
+call dein#add('Shougo/dein.vim')
+
+call dein#add( 'Shougo/vimproc', {
+      \ 'build' : 'make -f make_unix.mak'
+      \ })
+call dein#add('itchyny/lightline.vim')
+call dein#add('Lokaltog/vim-easymotion')
+call dein#add('Shougo/unite.vim')
+call dein#add('h1mesuke/unite-outline')
+call dein#add('Shougo/vimshell')
+call dein#add('thinca/vim-quickrun')
+call dein#add("jceb/vim-hier")
+call dein#add('scrooloose/syntastic')
+call dein#add('vim-scripts/VimClojure')
+"call dein#add('spolu/dwm.vim')
+call dein#add('tyru/caw.vim')
+call dein#add('Yggdroot/indentLine')
+call dein#add('sudo.vim')
+call dein#add('soramugi/auto-ctags.vim')
+"call dein#add('tpope/vim-surround')
+call dein#add('AnsiEsc.vim')
+call dein#add('Shougo/neocomplete.vim')
+call dein#add( 'osyo-manga/vim-marching', {
             \ 'depends' : ['Shougo/vimproc.vim', 'osyo-manga/vim-reunions'],
-            \ 'autoload' : {'filetypes' : ['c', 'cpp']}
-            \ }
-"NeoBundle 'Shougo/neosnippet'
-NeoBundle 'SirVer/ultisnips'
-NeoBundle 'honza/vim-snippets'
-NeoBundleLazy 'osyo-manga/vim-stargate', {
-      \ 'autoload' : {'filetypes' : 'cpp'}
-      \ }
-NeoBundle 'jpalardy/vim-slime'
-NeoBundle 'troydm/easybuffer.vim'
-NeoBundle 'osyo-manga/vim-over'
-NeoBundle 'vim-scripts/nginx.vim'
-NeoBundle 'rollxx/vim-antlr'
-"NeoBundle 'https://bitbucket.org/kovisoft/slimv'
+            \ 'on_ft' : ['c', 'cpp']
+            \ })
+"call dein#add('Shougo/neosnippet')
+call dein#add('SirVer/ultisnips')
+call dein#add('honza/vim-snippets')
+call dein#add( 'osyo-manga/vim-stargate', {
+      \ 'on_ft' : ['cpp']
+      \ })
+call dein#add('jpalardy/vim-slime')
+call dein#add('troydm/easybuffer.vim')
+call dein#add('osyo-manga/vim-over')
+call dein#add('vim-scripts/nginx.vim')
+call dein#add('rollxx/vim-antlr')
+"call dein#add('https://bitbucket.org/kovisoft/slimv')
 " git
-NeoBundle 'tpope/vim-fugitive'
+call dein#add('tpope/vim-fugitive')
 " ruby
-NeoBundle 'tpope/vim-rails'
-NeoBundle 'tpope/vim-endwise'
+call dein#add('tpope/vim-rails')
+call dein#add('tpope/vim-endwise')
 " c++
-NeoBundleLazy 'vim-jp/cpp-vim', {
-      \ 'autoload' : {'filetypes' : 'cpp'}
-      \}
+call dein#add( 'vim-jp/cpp-vim', {
+      \ 'on_ft': ['cpp']
+      \})
 " javacomplete
-NeoBundleLazy 'vim-scripts/javacomplete', {
-\   'build': {
-\       'cygwin': 'javac autoload/Reflection.java',
-\       'mac': 'javac autoload/Reflection.java',
-\       'unix': 'javac autoload/Reflection.java',
-\   },
-\}
+call dein#add('vim-scripts/javacomplete', {
+      \   'build': 'javac autoload/Reflection.java'
+      \})
 " python
-NeoBundle 'davidhalter/jedi-vim'
-NeoBundleLazy "lambdalisue/vim-pyenv", {
+call dein#add('davidhalter/jedi-vim')
+call dein#add("lambdalisue/vim-pyenv", {
       \ "depends": ['davidhalter/jedi-vim'],
-      \ "autoload": {
-      \   "filetypes": ["python", "python3", "djangohtml"]
-      \ }}
+      \ "on_ft": ["python", "python3", "djangohtml"]
+      \ })
 "" javascript / node.js
-NeoBundle 'jelera/vim-javascript-syntax'
-NeoBundle 'kchmck/vim-coffee-script'
-NeoBundle 'groenewege/vim-less'
-NeoBundle 'moll/vim-node'
-NeoBundle 'digitaltoad/vim-jade'
+call dein#add('jelera/vim-javascript-syntax')
+call dein#add('kchmck/vim-coffee-script')
+call dein#add('groenewege/vim-less')
+call dein#add('moll/vim-node')
+call dein#add('digitaltoad/vim-jade')
 "" Haskell
-NeoBundle 'kana/vim-filetype-haskell'
-NeoBundle 'eagletmt/ghcmod-vim'
-NeoBundle 'ujihisa/neco-ghc'
-NeoBundle 'ujihisa/ref-hoogle'
-NeoBundle 'ujihisa/unite-haskellimport'
+call dein#add('kana/vim-filetype-haskell')
+call dein#add('eagletmt/ghcmod-vim')
+call dein#add('ujihisa/neco-ghc')
+call dein#add('ujihisa/ref-hoogle')
+call dein#add('ujihisa/unite-haskellimport')
 "" Scala
-NeoBundle 'derekwyatt/vim-scala'
+call dein#add('derekwyatt/vim-scala')
 " html
-NeoBundle 'mattn/emmet-vim'
-NeoBundle 'tyru/open-browser.vim'
-NeoBundle 'hail2u/vim-css3-syntax'
-"NeoBundle 'AtsushiM/search-parent.vim'
-"NeoBundle 'AtsushiM/sass-compile.vim'
-NeoBundle 'othree/html5.vim'
-NeoBundle 'lilydjwg/colorizer'
+call dein#add('mattn/emmet-vim')
+call dein#add('tyru/open-browser.vim')
+call dein#add('hail2u/vim-css3-syntax')
+"call dein#add('AtsushiM/search-parent.vim')
+"call dein#add('AtsushiM/sass-compile.vim')
+call dein#add('othree/html5.vim')
+call dein#add('lilydjwg/colorizer')
 " css
-"NeoBundle 'skammer/vim-css-color'
+"call dein#add('skammer/vim-css-color')
 "" TypeScript
-NeoBundle 'leafgarland/typescript-vim', {
-      \ 'autoload': {
-      \   'filetypes': ['typescript']
-      \}}
-NeoBundleLazy 'clausreinke/typescript-tools.vim', {
-      \ 'autoload' : {
-      \   'filetypes' : ['typescript'] }
-      \}
+call dein#add('leafgarland/typescript-vim', {
+      \ 'on_ft': ['typescript']
+      \})
+call dein#add('clausreinke/typescript-tools.vim', {
+      \ 'on_ft' : ['typescript']
+      \})
 "" gnuplot
-NeoBundle 'vim-scripts/gnuplot.vim'
+call dein#add('vim-scripts/gnuplot.vim')
 "" plantuml
-NeoBundle 'aklt/plantuml-syntax'
+call dein#add('aklt/plantuml-syntax')
 "" colorscheme
-NeoBundle 'nanotech/jellybeans.vim'
-"NeoBundle 'vim-scripts/twilight'
-NeoBundle 'w0ng/vim-hybrid'
-NeoBundle 'altercation/vim-colors-solarized'
+call dein#add('nanotech/jellybeans.vim')
+"call dein#add('vim-scripts/twilight')
+call dein#add('w0ng/vim-hybrid')
+call dein#add('altercation/vim-colors-solarized')
 " LaTeX
-NeoBundle 'https://github.com/vim-latex/vim-latex'
+call dein#add('https://github.com/vim-latex/vim-latex')
 " ASM
-NeoBundle 'shiracamus/vim-syntax-x86-objdump-d'
+call dein#add('shiracamus/vim-syntax-x86-objdump-d')
 " Web
-NeoBundle 'mattn/webapi-vim'
-NeoBundle 'basyura/bitly.vim'
+call dein#add('mattn/webapi-vim')
+call dein#add('basyura/bitly.vim')
 " Twitter
-NeoBundle 'basyura/twibill.vim'
-NeoBundle 'basyura/TweetVim'
+call dein#add('basyura/twibill.vim')
+call dein#add('basyura/TweetVim')
 
-call neobundle#end()
+" Required:
+call dein#end()
 
+" Required:
 filetype plugin indent on
+syntax enable
 
-" プラグインのチェック
-NeoBundleCheck
-
-syntax on
+" If you want to install not installed plugins on startup.
+if dein#check_install()
+  call dein#install()
+endif
 
 " git protocol
 "let g:neobundle_default_git_protocol='git'

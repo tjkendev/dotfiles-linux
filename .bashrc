@@ -112,8 +112,10 @@ fi
 
 
 # Math Kernel Library
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/mkl/lib/intel64:/opt/intel/lib/intel64
-source /opt/intel/bin/compilervars.sh intel64
+if [ -f /opt/intel/bin/compilervars.sh ]; then
+  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/intel/mkl/lib/intel64:/opt/intel/lib/intel64
+  source /opt/intel/bin/compilervars.sh intel64
+fi
 
 # eclipse
 export PATH="/usr/local/eclipse:$PATH"
@@ -155,19 +157,27 @@ alias grun='java org.antlr.v4.runtime.misc.TestRig'
 alias a='./a.out'
 
 # nvm
-source ~/.nvm/nvm.sh
+if [ -f ~/.nvm/nvm.sh ]; then
+  source ~/.nvm/nvm.sh
+fi
 
 # rbenv
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
+if [ -d ~/.rbenv ]; then
+  export PATH="$HOME/.rbenv/bin:$PATH"
+  eval "$(rbenv init -)"
+fi
 
 # pyenv
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
+if [ -d ~/.pyenv ]; then
+  export PYENV_ROOT="$HOME/.pyenv"
+  export PATH="$PYENV_ROOT/bin:$PATH"
+  eval "$(pyenv init -)"
+fi
 
 # nodebrew
-export PATH=$HOME/.nodebrew/current/bin:$PATH
+if [ -d ~/.nodebrew ]; then
+  export PATH=$HOME/.nodebrew/current/bin:$PATH
+fi
 
 # npm
 #export PATH=$(npm bin -g):$PATH
