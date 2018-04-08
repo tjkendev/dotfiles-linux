@@ -179,6 +179,9 @@ if [ -d ~/.nodebrew ]; then
   export PATH=$HOME/.nodebrew/current/bin:$PATH
 fi
 
+# nodebrew
+export PATH='/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin':"$PATH"
+
 # npm
 #export PATH=$(npm bin -g):$PATH
 

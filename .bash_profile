@@ -6,3 +6,4 @@ export HISTTIMEFORMAT="[%Y%m%d %H:%M:%S] "
 
 export HISTCONTROL=ignoreboth:ignorespace
 
+export PATH='/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin':"$PATH"

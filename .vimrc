@@ -111,6 +111,9 @@ autocmd vimrc FileType coffee     setlocal sw=2 sts=2 ts=2 et
 " Jython
 autocmd BufRead,BufNewFile,BufReadPre *.jy set filetype=python
 
+" ruby
+autocmd FileType ruby setl iskeyword+=?
+
 """ source ~/.vimrc
 ca sv source<Space>~/.vimrc
 ca vds vertical<Space>diffsplit
@@ -166,10 +169,10 @@ call dein#add('vim-scripts/VimClojure')
 "call dein#add('spolu/dwm.vim')
 call dein#add('tyru/caw.vim')
 call dein#add('Yggdroot/indentLine')
-call dein#add('sudo.vim')
+call dein#add('vim-scripts/sudo.vim')
 call dein#add('soramugi/auto-ctags.vim')
 "call dein#add('tpope/vim-surround')
-call dein#add('AnsiEsc.vim')
+call dein#add('vim-scripts/AnsiEsc.vim')
 call dein#add('Shougo/neocomplete.vim')
 call dein#add( 'osyo-manga/vim-marching', {
             \ 'depends' : ['vimproc', 'vim-reunions'],
@@ -192,6 +195,8 @@ call dein#add('tpope/vim-fugitive')
 " ruby
 call dein#add('tpope/vim-rails')
 call dein#add('tpope/vim-endwise')
+call dein#add('kana/vim-textobj-user')
+call dein#add('rhysd/vim-textobj-ruby')
 " c++
 call dein#add( 'vim-jp/cpp-vim', {
       \ 'on_ft': ['cpp']
