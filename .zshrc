@@ -157,6 +157,10 @@ if [ -d ~/.nodebrew ]; then
   export PATH=$HOME/.nodebrew/current/bin:$PATH
 fi
 
+# golang
+export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
+export GOPATH=$HOME/go
+
 # linuxbrew
 export PATH='/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin':"$PATH"
 
@@ -165,6 +169,9 @@ export PATH='/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin':"$P
 
 # cabal
 export PATH="$PATH:~/.cabal/bin"
+
+# rust
+export PATH="$HOME/.cargo/bin:$PATH"
 
 # scala
 export PATH="/usr/local/scala-2.11.7/bin:$PATH"

@@ -254,6 +254,8 @@ call dein#add('nanotech/jellybeans.vim')
 "call dein#add('vim-scripts/twilight')
 call dein#add('w0ng/vim-hybrid')
 call dein#add('altercation/vim-colors-solarized')
+" golang
+call dein#add('fatih/vim-go')
 " LaTeX
 call dein#add('vim-latex/vim-latex')
 " ASM
