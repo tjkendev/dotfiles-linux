@@ -152,6 +152,12 @@ if [ -d ~/.pyenv ]; then
   eval "$(pyenv init -)"
 fi
 
+# plenv
+if [ -d ~/.plenv ]; then
+  export PATH="$HOME/.plenv/bin:$PATH"
+  eval "$(plenv init -)"
+fi
+
 # nodebrew
 if [ -d ~/.nodebrew ]; then
   export PATH=$HOME/.nodebrew/current/bin:$PATH
@@ -163,6 +169,7 @@ export GOPATH=$HOME/go
 
 # linuxbrew
 export PATH='/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin':"$PATH"
+export PATH=$PATH:/home/linuxbrew/.linuxbrew/opt/go/libexec/bin
 
 # npm
 #export PATH=$(npm bin -g):$PATH
@@ -183,3 +190,5 @@ export PATH=$PATH:$PLAY_HOME
 # pbcopy
 alias pbcopy='xsel --clipboard --input'
 
+# clear screen
+alias clear='tput reset'
