@@ -7,7 +7,7 @@ augroup vimrc
 augroup END
 
 """ Editor """
-set clipboard=unnamedplus,autoselect  " '+'とクリップボード共有
+"set clipboard=unnamedplus,autoselect  " '+'とクリップボード共有
 set smarttab
 set tabstop=2    " タブ幅
 set shiftwidth=2 " タブを挿入するときの幅
@@ -147,130 +147,129 @@ endif
 " Required:
 set runtimepath+=~/.vim/dein/repos/github.com/Shougo/dein.vim
 
-" Required:
-call dein#begin('~/.vim/dein')
+if dein#load_state('~/.cache/dein')
+  " Let dein manage dein
+  call dein#begin('~/.cache/dein')
+  call dein#add('~/.cache/dein')
 
-" Let dein manage dein
-" Required:
-call dein#add('Shougo/dein.vim')
+  call dein#add( 'Shougo/vimproc.vim', {
+        \ 'build' : 'make -f make_unix.mak'
+        \ })
+  call dein#add('itchyny/lightline.vim')
+  call dein#add('Lokaltog/vim-easymotion')
+  call dein#add('Shougo/unite.vim')
+  call dein#add('h1mesuke/unite-outline')
+  call dein#add('Shougo/vimshell')
+  call dein#add('thinca/vim-quickrun')
+  call dein#add("jceb/vim-hier")
+  call dein#add('scrooloose/syntastic')
+  call dein#add('vim-scripts/VimClojure')
+  "call dein#add('spolu/dwm.vim')
+  call dein#add('tyru/caw.vim')
+  call dein#add('Yggdroot/indentLine')
+  call dein#add('vim-scripts/sudo.vim')
+  call dein#add('soramugi/auto-ctags.vim')
+  "call dein#add('tpope/vim-surround')
+  call dein#add('vim-scripts/AnsiEsc.vim')
+  call dein#add('Shougo/neocomplete.vim')
+  call dein#add('osyo-manga/vim-reunions')
+  call dein#add( 'osyo-manga/vim-marching', {
+              \ 'depends' : ['vimproc.vim', 'vim-reunions'],
+              \ 'on_ft' : ['c', 'cpp']
+              \ })
+  "call dein#add('Shougo/neosnippet')
+  call dein#add('SirVer/ultisnips')
+  call dein#add('honza/vim-snippets')
+  call dein#add( 'osyo-manga/vim-stargate', {
+        \ 'on_ft' : ['cpp']
+        \ })
+  call dein#add('jpalardy/vim-slime')
+  call dein#add('troydm/easybuffer.vim')
+  call dein#add('osyo-manga/vim-over')
+  call dein#add('vim-scripts/nginx.vim')
+  call dein#add('rollxx/vim-antlr')
+  "call dein#add('https://bitbucket.org/kovisoft/slimv')
+  " git
+  call dein#add('tpope/vim-fugitive')
+  " ruby
+  call dein#add('tpope/vim-rails')
+  call dein#add('tpope/vim-endwise')
+  call dein#add('kana/vim-textobj-user')
+  call dein#add('rhysd/vim-textobj-ruby')
+  " c++
+  call dein#add( 'vim-jp/cpp-vim', {
+        \ 'on_ft': ['cpp']
+        \})
+  " javacomplete
+  call dein#add('vim-scripts/javacomplete', {
+        \   'build': 'javac autoload/Reflection.java'
+        \})
+  " python
+  call dein#add('lambdalisue/vim-django-support', {
+        \ "on_ft": ["python", "python3", "djangohtml"]
+        \ })
+  call dein#add('davidhalter/jedi-vim')
+  call dein#add("lambdalisue/vim-pyenv", {
+        \ "depends": ['jedi-vim'],
+        \ "on_ft": ["python", "python3", "djangohtml"]
+        \ })
+  "" javascript / node.js
+  call dein#add('jelera/vim-javascript-syntax')
+  call dein#add('kchmck/vim-coffee-script')
+  call dein#add('groenewege/vim-less')
+  call dein#add('moll/vim-node')
+  call dein#add('digitaltoad/vim-jade')
+  "" Haskell
+  call dein#add('kana/vim-filetype-haskell')
+  call dein#add('eagletmt/ghcmod-vim')
+  call dein#add('ujihisa/neco-ghc')
+  call dein#add('ujihisa/ref-hoogle')
+  call dein#add('ujihisa/unite-haskellimport')
+  "" Scala
+  call dein#add('derekwyatt/vim-scala')
+  " html
+  call dein#add('mattn/emmet-vim')
+  call dein#add('tyru/open-browser.vim')
+  call dein#add('hail2u/vim-css3-syntax')
+  "call dein#add('AtsushiM/search-parent.vim')
+  "call dein#add('AtsushiM/sass-compile.vim')
+  call dein#add('othree/html5.vim')
+  call dein#add('lilydjwg/colorizer')
+  " css
+  "call dein#add('skammer/vim-css-color')
+  "" TypeScript
+  call dein#add('leafgarland/typescript-vim', {
+        \ 'on_ft': ['typescript']
+        \})
+  call dein#add('clausreinke/typescript-tools.vim', {
+        \ 'on_ft' : ['typescript']
+        \})
+  "" gnuplot
+  call dein#add('vim-scripts/gnuplot.vim')
+  "" plantuml
+  call dein#add('aklt/plantuml-syntax')
+  "" colorscheme
+  call dein#add('nanotech/jellybeans.vim')
+  "call dein#add('vim-scripts/twilight')
+  call dein#add('w0ng/vim-hybrid')
+  call dein#add('altercation/vim-colors-solarized')
+  " golang
+  call dein#add('fatih/vim-go')
+  " LaTeX
+  call dein#add('vim-latex/vim-latex')
+  " ASM
+  call dein#add('shiracamus/vim-syntax-x86-objdump-d')
+  " Web
+  call dein#add('mattn/webapi-vim')
+  call dein#add('basyura/bitly.vim')
+  " Twitter
+  call dein#add('basyura/twibill.vim')
+  call dein#add('basyura/TweetVim')
 
-call dein#add( 'Shougo/vimproc.vim', {
-      \ 'build' : 'make -f make_unix.mak'
-      \ })
-call dein#add('itchyny/lightline.vim')
-call dein#add('Lokaltog/vim-easymotion')
-call dein#add('Shougo/unite.vim')
-call dein#add('h1mesuke/unite-outline')
-call dein#add('Shougo/vimshell')
-call dein#add('thinca/vim-quickrun')
-call dein#add("jceb/vim-hier")
-call dein#add('scrooloose/syntastic')
-call dein#add('vim-scripts/VimClojure')
-"call dein#add('spolu/dwm.vim')
-call dein#add('tyru/caw.vim')
-call dein#add('Yggdroot/indentLine')
-call dein#add('vim-scripts/sudo.vim')
-call dein#add('soramugi/auto-ctags.vim')
-"call dein#add('tpope/vim-surround')
-call dein#add('vim-scripts/AnsiEsc.vim')
-call dein#add('Shougo/neocomplete.vim')
-call dein#add( 'osyo-manga/vim-marching', {
-            \ 'depends' : ['vimproc', 'vim-reunions'],
-            \ 'on_ft' : ['c', 'cpp']
-            \ })
-"call dein#add('Shougo/neosnippet')
-call dein#add('SirVer/ultisnips')
-call dein#add('honza/vim-snippets')
-call dein#add( 'osyo-manga/vim-stargate', {
-      \ 'on_ft' : ['cpp']
-      \ })
-call dein#add('jpalardy/vim-slime')
-call dein#add('troydm/easybuffer.vim')
-call dein#add('osyo-manga/vim-over')
-call dein#add('vim-scripts/nginx.vim')
-call dein#add('rollxx/vim-antlr')
-"call dein#add('https://bitbucket.org/kovisoft/slimv')
-" git
-call dein#add('tpope/vim-fugitive')
-" ruby
-call dein#add('tpope/vim-rails')
-call dein#add('tpope/vim-endwise')
-call dein#add('kana/vim-textobj-user')
-call dein#add('rhysd/vim-textobj-ruby')
-" c++
-call dein#add( 'vim-jp/cpp-vim', {
-      \ 'on_ft': ['cpp']
-      \})
-" javacomplete
-call dein#add('vim-scripts/javacomplete', {
-      \   'build': 'javac autoload/Reflection.java'
-      \})
-" python
-call dein#add('lambdalisue/vim-django-support', {
-      \ "on_ft": ["python", "python3", "djangohtml"]
-      \ })
-call dein#add('davidhalter/jedi-vim')
-call dein#add("lambdalisue/vim-pyenv", {
-      \ "depends": ['jedi-vim'],
-      \ "on_ft": ["python", "python3", "djangohtml"]
-      \ })
-"" javascript / node.js
-call dein#add('jelera/vim-javascript-syntax')
-call dein#add('kchmck/vim-coffee-script')
-call dein#add('groenewege/vim-less')
-call dein#add('moll/vim-node')
-call dein#add('digitaltoad/vim-jade')
-"" Haskell
-call dein#add('kana/vim-filetype-haskell')
-call dein#add('eagletmt/ghcmod-vim')
-call dein#add('ujihisa/neco-ghc')
-call dein#add('ujihisa/ref-hoogle')
-call dein#add('ujihisa/unite-haskellimport')
-"" Scala
-call dein#add('derekwyatt/vim-scala')
-" html
-call dein#add('mattn/emmet-vim')
-call dein#add('tyru/open-browser.vim')
-call dein#add('hail2u/vim-css3-syntax')
-"call dein#add('AtsushiM/search-parent.vim')
-"call dein#add('AtsushiM/sass-compile.vim')
-call dein#add('othree/html5.vim')
-call dein#add('lilydjwg/colorizer')
-" css
-"call dein#add('skammer/vim-css-color')
-"" TypeScript
-call dein#add('leafgarland/typescript-vim', {
-      \ 'on_ft': ['typescript']
-      \})
-call dein#add('clausreinke/typescript-tools.vim', {
-      \ 'on_ft' : ['typescript']
-      \})
-"" gnuplot
-call dein#add('vim-scripts/gnuplot.vim')
-"" plantuml
-call dein#add('aklt/plantuml-syntax')
-"" colorscheme
-call dein#add('nanotech/jellybeans.vim')
-"call dein#add('vim-scripts/twilight')
-call dein#add('w0ng/vim-hybrid')
-call dein#add('altercation/vim-colors-solarized')
-" golang
-call dein#add('fatih/vim-go')
-" LaTeX
-call dein#add('vim-latex/vim-latex')
-" ASM
-call dein#add('shiracamus/vim-syntax-x86-objdump-d')
-" Web
-call dein#add('mattn/webapi-vim')
-call dein#add('basyura/bitly.vim')
-" Twitter
-call dein#add('basyura/twibill.vim')
-call dein#add('basyura/TweetVim')
+  call dein#end()
+  call dein#save_state()
+endif
 
-" Required:
-call dein#end()
-
-" Required:
 filetype plugin indent on
 syntax enable
 
@@ -449,7 +448,7 @@ let g:quickrun_config = {
       \     "outputter/buffer/close_on_empty": 1,
       \ },
       \ "cpp/g++" : {
-      \     "cmdopt" : "-std=c++11"
+      \     "cmdopt" : "-std=c++17"
       \ },
       \ "asm" : {
       \     "command" : "gcc",
@@ -487,12 +486,12 @@ autocmd QuickFixCmdPost *grep* cwindow
 
 "" ----- syntastic -----
 " use c++11
-let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libc++'
+let g:syntastic_cpp_compiler_options = '-std=c++17 -stdlib=libc++'
 " ASM use -m32
 let g:syntastic_asm_compiler_options = '-m32'
 " use pyflakes and pep8
 let g:syntastic_python_checkers = ['pyflakes', 'pep8']
-" pep8のErrorCheck僕には厳しいので少し緩めに
+" pep8のErrorCheckは厳しいので少し緩めに
 let g:syntastic_python_pep8_args='--ignore=E302,E501,E225,E226,E228,E265,E702,E703'
 " SyntasticToggleMode を F4 で切り替え
 noremap <silent><F4> :SyntasticToggleMode<CR>
@@ -507,7 +506,7 @@ vmap \C <Plug>(caw:zeropos:uncomment)
 
 " ----- auto-ctags -----
 " 保存時に勝手にtagsファイルを作成する
-let g:auto_ctags = 1
+let g:auto_ctags = 0
 " tagsを作成するディレクトリを指定
 let g:auto_ctags_directory_list = ['.git', '.svn']
 " 作成されたtagsを別途読み取る
