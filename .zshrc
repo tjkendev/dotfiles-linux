@@ -192,3 +192,6 @@ alias pbcopy='xsel --clipboard --input'
 
 # clear screen
 alias clear='tput reset'
+
+# travis gem
+[ -f ~/.travis/travis.sh ] && source ~/.travis/travis.sh

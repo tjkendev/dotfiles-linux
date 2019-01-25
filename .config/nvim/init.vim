@@ -146,6 +146,7 @@ if dein#load_state('~/.cache/dein')
   call dein#add('thinca/vim-quickrun')
   call dein#add('scrooloose/syntastic')
   call dein#add('nanotech/jellybeans.vim')
+  call dein#add('airblade/vim-gitgutter')
   call dein#add('Shougo/deoplete.nvim')
   call dein#add('zchee/deoplete-jedi')
   call dein#add('zchee/deoplete-clang')
@@ -204,7 +205,7 @@ let g:lightline = {
 "" ----- deoplete -----
 let g:deoplete#enable_at_startup = 1
 call deoplete#custom#option({
-      \ 'auto_complete_delay': 10,
+      \ 'auto_complete_delay': 2,
       \})
 
 inoremap <silent><expr> <TAB>

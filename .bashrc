@@ -198,3 +198,6 @@ export PATH=$PATH:$PLAY_HOME
 # pbcopy
 alias pbcopy='xsel --clipboard --input'
 
+
+# added by travis gem
+[ -f ~/.travis/travis.sh ] && source ~/.travis/travis.sh
