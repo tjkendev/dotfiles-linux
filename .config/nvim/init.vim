@@ -121,8 +121,7 @@ augroup END
 command InvalidBinary :autocmd! BinaryXXD
 
 "" pyenv
-"let g:python_host_prog = $PYENV_ROOT . '/shims/python'
-let g:python_host_prog = ''
+let g:python_host_prog = $PYENV_ROOT . '/shims/python'
 let g:python3_host_prog = $PYENV_ROOT . '/shims/python3'
 
 
@@ -150,11 +149,15 @@ if dein#load_state('~/.cache/dein')
   call dein#add('Shougo/deoplete.nvim')
   call dein#add('zchee/deoplete-jedi')
   call dein#add('zchee/deoplete-clang')
+  call dein#add('othree/yajs.vim')
   "call dein#add('zchee/nvim-go', {'build': 'make'})
   if !has('nvim')
     call dein#add('roxma/nvim-yarp')
     call dein#add('roxma/vim-hug-neovim-rpc')
   endif
+
+  call dein#add('Shougo/neosnippet.vim')
+  call dein#add('Shougo/neosnippet-snippets')
 
   call dein#end()
   call dein#save_state()
@@ -211,15 +214,45 @@ call deoplete#custom#option({
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? "\<C-n>" :
       \ <SID>check_back_space() ? "\<TAB>" :
-      \ deoplete#mappings#manual_complete()
+      \ deoplete#manual_complete()
 function! s:check_back_space() abort "{{{
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~ '\s'
 endfunction"}}}
 
+"" deoplete-clang
+let g:deoplete#sources#clang#libclang_path = '/usr/lib/llvm-6.0/lib/libclang-6.0.0.so'
+let g:deoplete#sources#clang#clang_header = '/usr/include/clang'
+
+"" ----- neosnippet.vim -----
+
+let g:neosnippet#snippets_directory = "$HOME/.config/nvim/snippets/"
+
+" Plugin key-mappings.
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
+
+" SuperTab like snippets behavior.
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+"imap <expr><TAB>
+" \ pumvisible() ? "\<C-n>" :
+" \ neosnippet#expandable_or_jumpable() ?
+" \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+      \ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+
+" For conceal markers.
+if has('conceal')
+  set conceallevel=2 concealcursor=niv
+endif
+
 "" ----- indentLine -----
 let g:indentLine_char = '¦'
 let g:indentLine_color_term = 239
+
+let g:tex_conceal = ''
 
 "" ----- vim-quickrun -----
 let g:quickrun_config = {

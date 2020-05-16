@@ -1,0 +1,47 @@
+snippet base
+  import sys
+  readline = sys.stdin.readline
+  write = sys.stdout.write
+  flush = sys.stdout.flush
+  sys.setrecursionlimit(10**6)
+
+snippet solve
+  import sys
+  readline = sys.stdin.readline
+  write = sys.stdout.write
+  def solve():
+      $1
+  solve()
+
+snippet importheap
+  from heapq import heappush, heappop, heapify
+
+snippet importque
+  from collections import deque
+
+snippet importdict
+  from collections import defaultdict
+
+snippet a1
+  $1 = [$2 for i in range($3)]
+
+snippet i1
+  $1 = int(readline())
+
+snippet i2
+  $1 = map(int, readline().split())
+
+snippet f1
+  $1 = float(readline())
+
+snippet f2
+  $1 = map(float, readline().split())
+
+snippet s1
+  $1 = readline().strip()
+
+snippet s2
+  $1 = readline().strip().split()
+
+snippet w1
+  write($1)
