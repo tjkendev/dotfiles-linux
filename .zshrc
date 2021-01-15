@@ -158,6 +158,17 @@ if [ -d ~/.plenv ]; then
   eval "$(plenv init -)"
 fi
 
+# jenv
+if [ -d ~/.jenv ]; then
+  export PATH="$HOME/.jenv/bin:$PATH"
+  eval "$(jenv init -)"
+fi
+
+# mysqlenv
+if [ -d ~/.mysqlenv ]; then
+  source ~/.mysqlenv/etc/bashrc
+fi
+
 # nodebrew
 if [ -d ~/.nodebrew ]; then
   export PATH=$HOME/.nodebrew/current/bin:$PATH
@@ -168,17 +179,23 @@ export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
 export GOPATH=$HOME/go
 
 # linuxbrew
-export PATH='/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin':"$PATH"
-export PATH=$PATH:/home/linuxbrew/.linuxbrew/opt/go/libexec/bin
+if [ -d /home/linuxbrew/.linuxbrew ]; then
+  export PATH='/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin':"$PATH"
+  export PATH=$PATH:/home/linuxbrew/.linuxbrew/opt/go/libexec/bin
+fi
 
 # npm
 #export PATH=$(npm bin -g):$PATH
 
 # cabal
-export PATH="$PATH:~/.cabal/bin"
+if [ -d ~/.cabal ]; then
+  export PATH="$PATH:~/.cabal/bin"
+fi
 
 # rust
-export PATH="$HOME/.cargo/bin:$PATH"
+if [ -d ~/.cargo ]; then
+  export PATH="$HOME/.cargo/bin:$PATH"
+fi
 
 # scala
 export PATH="/usr/local/scala-2.11.7/bin:$PATH"
@@ -195,3 +212,6 @@ alias clear='tput reset'
 
 # travis gem
 [ -f ~/.travis/travis.sh ] && source ~/.travis/travis.sh
+
+# settings for WSL2
+export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0

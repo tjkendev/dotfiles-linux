@@ -150,6 +150,7 @@ if dein#load_state('~/.cache/dein')
   call dein#add('zchee/deoplete-jedi')
   call dein#add('zchee/deoplete-clang')
   call dein#add('othree/yajs.vim')
+  call dein#add('kchmck/vim-coffee-script')
   "call dein#add('zchee/nvim-go', {'build': 'make'})
   if !has('nvim')
     call dein#add('roxma/nvim-yarp')
@@ -221,7 +222,7 @@ function! s:check_back_space() abort "{{{
 endfunction"}}}
 
 "" deoplete-clang
-let g:deoplete#sources#clang#libclang_path = '/usr/lib/llvm-6.0/lib/libclang-6.0.0.so'
+let g:deoplete#sources#clang#libclang_path = '/usr/lib/llvm-10/lib/libclang-10.0.0.so'
 let g:deoplete#sources#clang#clang_header = '/usr/include/clang'
 
 "" ----- neosnippet.vim -----

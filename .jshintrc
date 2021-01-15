@@ -1,7 +1,8 @@
 {
-  "curly": false
-  "eqeqeq": true
-  "undef": true
-  "unused": true
+  "node": true,
+  "curly": false,
+  "eqeqeq": true,
+  "undef": true,
+  "unused": true,
   "strict": false
 }
